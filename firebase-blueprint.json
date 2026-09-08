@@ -1,0 +1,117 @@
+{
+  "entities": {
+    "CustomerOrder": {
+      "title": "Customer Order",
+      "description": "Customer order details with delivery address, phone, and selected product for Cash on Delivery processing.",
+      "type": "object",
+      "properties": {
+        "customerName": {
+          "type": "string",
+          "description": "Full name of the customer"
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "Mobile contact number for delivery coordination"
+        },
+        "houseAndRoad": {
+          "type": "string",
+          "description": "House and road details"
+        },
+        "areaDetails": {
+          "type": "string",
+          "description": "Area, Thana or Sector details"
+        },
+        "districtRegion": {
+          "type": "string",
+          "description": "City or District in Bangladesh"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Payment method strictly defaulted to Cash on Delivery (COD)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "confirmed", "dispatched", "delivered", "cancelled"],
+          "description": "Order fulfillment status"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the order was placed"
+        }
+      },
+      "required": ["customerName", "contactNumber", "houseAndRoad", "districtRegion", "paymentMethod"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "Conversation message between customer and Nandonik Concierge.",
+      "type": "object",
+      "properties": {
+        "sender": {
+          "type": "string",
+          "enum": ["user", "concierge"]
+        },
+        "text": {
+          "type": "string",
+          "description": "Message body"
+        },
+        "customerName": {
+          "type": "string"
+        },
+        "contactNumber": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["sender", "text"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Curated artisanal product item in the boutique catalogue.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "category": {
+          "type": "string"
+        },
+        "inStock": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "sku", "name", "price", "category"]
+    }
+  },
+  "firestore": {
+    "/customer_orders/{orderId}": {
+      "schema": "CustomerOrder",
+      "description": "Collection storing all incoming customer orders and delivery information"
+    },
+    "/chat_messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Collection storing concierge interaction and user chat submissions"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Boutique catalog products managed by store admins"
+    }
+  }
+}

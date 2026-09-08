@@ -1,0 +1,6 @@
+{
+  "name": "Nandonik Bazar",
+  "description": "Artisanal luxury boutique and lifestyle curations with direct WhatsApp concierge shopping in Bangladesh.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

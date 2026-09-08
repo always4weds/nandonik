@@ -1,0 +1,43 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isValidString(val, maxLen) {
+      return val is string && val.size() <= maxLen;
+    }
+
+    // Default test connection
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Customer orders collection
+    match /customer_orders/{orderId} {
+      // Allow customers to submit their orders
+      allow create: if request.resource.data.keys().hasAll(['customerName', 'contactNumber', 'houseAndRoad', 'districtRegion', 'paymentMethod'])
+                    && isValidString(request.resource.data.customerName, 200)
+                    && isValidString(request.resource.data.contactNumber, 50)
+                    && isValidString(request.resource.data.houseAndRoad, 300);
+      
+      // Allow read and status updates
+      allow read, update: if true;
+      allow delete: if false;
+    }
+
+    // Chat messages collection
+    match /chat_messages/{messageId} {
+      allow create: if request.resource.data.keys().hasAll(['sender', 'text'])
+                    && request.resource.data.sender in ['user', 'concierge']
+                    && isValidString(request.resource.data.text, 2000);
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
+    // Products collection
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}
